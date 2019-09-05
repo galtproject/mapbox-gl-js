@@ -119,7 +119,7 @@ class DragPanHandler {
         // window-level event listeners give us the best shot at capturing events that
         // fall outside the map canvas element. Use `{capture: true}` for the move event
         // to prevent map move events from being fired during a drag.
-        DOM.addEventListener(window.document, 'mousemove', this._onMove, {capture: true});
+        DOM.addEventListener(window.document, 'mousemove', this._onMove, {capture: true, passive: false});
         DOM.addEventListener(window.document, 'mouseup', this._onMouseUp);
 
         this._start(e);
@@ -151,11 +151,7 @@ class DragPanHandler {
     }
 
     _onMove(e: MouseEvent | TouchEvent) {
-        try {
-          e.preventDefault();
-        } catch (e) {
-          console.warn('_onMove preventDefault error', e);
-        }
+        e.preventDefault();
 
         const pos = DOM.mousePos(this._el, e);
         if (this._lastPos.equals(pos) || (this._state === 'pending' && pos.dist(this._mouseDownPos) < this._clickTolerance)) {
@@ -258,7 +254,7 @@ class DragPanHandler {
     _unbind() {
         DOM.removeEventListener(window.document, 'touchmove', this._onMove, {capture: true, passive: false});
         DOM.removeEventListener(window.document, 'touchend', this._onTouchEnd);
-        DOM.removeEventListener(window.document, 'mousemove', this._onMove, {capture: true});
+        DOM.removeEventListener(window.document, 'mousemove', this._onMove, {capture: true, passive: false});
         DOM.removeEventListener(window.document, 'mouseup', this._onMouseUp);
         DOM.removeEventListener(window, 'blur', this._onBlur);
     }

@@ -151,7 +151,11 @@ class DragPanHandler {
     }
 
     _onMove(e: MouseEvent | TouchEvent) {
-        e.preventDefault();
+        try {
+          e.preventDefault();
+        } catch (e) {
+          console.warn('_onMove preventDefault error', e);
+        }
 
         const pos = DOM.mousePos(this._el, e);
         if (this._lastPos.equals(pos) || (this._state === 'pending' && pos.dist(this._mouseDownPos) < this._clickTolerance)) {

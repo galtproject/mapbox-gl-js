@@ -40175,6 +40175,7 @@ var Map = function (Camera) {
         }
     };
     Map.prototype._updateStyle = function _updateStyle(style, options) {
+        console.log('_updateStyle', style);
         if (this.style) {
             this.style.setEventedParent(null);
             this.style._remove();
